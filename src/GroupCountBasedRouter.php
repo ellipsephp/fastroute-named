@@ -4,8 +4,8 @@ namespace Ellipse\FastRoute;
 
 use FastRoute\RouteParser;
 use FastRoute\DataGenerator;
-use FastRoute\Dispatcher;
 use FastRoute\RouteCollector;
+use FastRoute\Dispatcher;
 
 class GroupCountBasedRouter extends Router
 {
