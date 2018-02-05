@@ -9,18 +9,18 @@ use FastRoute\RouteCollector;
 use FastRoute\RouteParser;
 use FastRoute\DataGenerator;
 
-use Ellipse\FastRoute\Map;
+use Ellipse\FastRoute\RouteMap;
 use Ellipse\FastRoute\RoutePattern;
 use Ellipse\FastRoute\NamedRouteCollector;
-use Ellipse\FastRoute\Exceptions\RouteNameNotAStringException;
+use Ellipse\FastRoute\Exceptions\RouteNameTypeException;
 
 describe('NamedRouteCollector', function () {
 
     beforeEach(function () {
 
-        $this->map = mock(Map::class);
+        $this->map = mock(RouteMap::class);
 
-        allow(Map::class)->toBe($this->map->get());
+        allow(RouteMap::class)->toBe($this->map->get());
 
         $this->delegate = mock(RouteCollector::class);
 
@@ -46,7 +46,7 @@ describe('NamedRouteCollector', function () {
 
     describe('->addRoute()', function () {
 
-        context('when no name is given', function () {
+        context('when no route name is given', function () {
 
             it('should proxy the delegate', function () {
 
@@ -56,7 +56,7 @@ describe('NamedRouteCollector', function () {
 
             });
 
-            it('should proxy the map ->associate() method with an empty name', function () {
+            it('should proxy the map ->associate() method with an empty route name', function () {
 
                 $this->collector->addRoute('GET', '/pattern', 'handler');
 
@@ -66,9 +66,9 @@ describe('NamedRouteCollector', function () {
 
         });
 
-        context('when a name is given', function () {
+        context('when a route name is given', function () {
 
-            context('when the given name is a string', function () {
+            context('when the given route name is a string', function () {
 
                 it('should proxy the delegate', function () {
 
@@ -88,9 +88,9 @@ describe('NamedRouteCollector', function () {
 
             });
 
-            context('when the given name is not a string', function () {
+            context('when the given route name is not a string', function () {
 
-                it('should throw a RouteNameNotAStringException', function () {
+                it('should throw a RouteNameTypeException', function () {
 
                     $test = function () {
 
@@ -98,7 +98,7 @@ describe('NamedRouteCollector', function () {
 
                     };
 
-                    $exception = new RouteNameNotAStringException(1);
+                    $exception = new RouteNameTypeException(1);
 
                     expect($test)->toThrow($exception);
 
@@ -122,7 +122,7 @@ describe('NamedRouteCollector', function () {
 
         });
 
-        context('when no name is given', function () {
+        context('when no route name prefix is given', function () {
 
             it('should proxy the delegate', function () {
 
@@ -140,7 +140,7 @@ describe('NamedRouteCollector', function () {
 
             });
 
-            it('should call the map ->addNamePrefix() with an empty prefix', function () {
+            it('should call the map ->addNamePrefix() with an empty route name prefix', function () {
 
                 $this->concrete->addGroup('/route_prefix', $this->callback);
 
@@ -174,9 +174,9 @@ describe('NamedRouteCollector', function () {
 
         });
 
-        context('when a name is given', function () {
+        context('when a route name prefix is given', function () {
 
-            context('when the given name is a string', function () {
+            context('when the given route name prefix is a string', function () {
 
                 it('should proxy the delegate', function () {
 
@@ -194,7 +194,7 @@ describe('NamedRouteCollector', function () {
 
                 });
 
-                it('should call the map ->addNamePrefix() with an empty prefix', function () {
+                it('should call the map ->addNamePrefix() with the given route name prefix', function () {
 
                     $this->concrete->addGroup('name_prefix', '/route_prefix', $this->callback);
 
@@ -228,9 +228,9 @@ describe('NamedRouteCollector', function () {
 
             });
 
-            context('when the given name is not a string', function () {
+            context('when the given route name prefix is not a string', function () {
 
-                it('should throw a RouteNameNotAStringException', function () {
+                it('should throw a RouteNameTypeException', function () {
 
                     $test = function () {
 
@@ -238,7 +238,7 @@ describe('NamedRouteCollector', function () {
 
                     };
 
-                    $exception = new RouteNameNotAStringException(1);
+                    $exception = new RouteNameTypeException(1);
 
                     expect($test)->toThrow($exception);
 
@@ -278,7 +278,7 @@ describe('NamedRouteCollector', function () {
 
         describe('->get()', function () {
 
-            context('when no name is given', function () {
+            context('when no route name is given', function () {
 
                 it('should proxy the ->addRoute() method with the GET method', function () {
 
@@ -292,9 +292,9 @@ describe('NamedRouteCollector', function () {
 
             });
 
-            context('when a name is given', function () {
+            context('when a route name is given', function () {
 
-                it('should proxy the ->addRoute() method with the name and GET method', function () {
+                it('should proxy the ->addRoute() method with the route name and GET method', function () {
 
                     $collection = $this->collector->get();
 
@@ -310,7 +310,7 @@ describe('NamedRouteCollector', function () {
 
         describe('->post()', function () {
 
-            context('when no name is given', function () {
+            context('when no route name is given', function () {
 
                 it('should proxy the ->addRoute() method with the POST method', function () {
 
@@ -325,9 +325,9 @@ describe('NamedRouteCollector', function () {
             });
 
 
-            context('when a name is given', function () {
+            context('when a route name is given', function () {
 
-                it('should proxy the ->addRoute() method with the name and POST method', function () {
+                it('should proxy the ->addRoute() method with the route name and POST method', function () {
 
                     $collection = $this->collector->get();
 
@@ -343,7 +343,7 @@ describe('NamedRouteCollector', function () {
 
         describe('->put()', function () {
 
-            context('when no name is given', function () {
+            context('when no route name is given', function () {
 
                 it('should proxy the ->addRoute() method with the PUT method', function () {
 
@@ -357,9 +357,9 @@ describe('NamedRouteCollector', function () {
 
             });
 
-            context('when a name is given', function () {
+            context('when a route name is given', function () {
 
-                it('should proxy the ->addRoute() method with the name and PUT method', function () {
+                it('should proxy the ->addRoute() method with the route name and PUT method', function () {
 
                     $collection = $this->collector->get();
 
@@ -375,7 +375,7 @@ describe('NamedRouteCollector', function () {
 
         describe('->delete()', function () {
 
-            context('when no name is given', function () {
+            context('when no route name is given', function () {
 
                 it('should proxy the ->addRoute() method with the DELETE method', function () {
 
@@ -389,9 +389,9 @@ describe('NamedRouteCollector', function () {
 
             });
 
-            context('when a name is given', function () {
+            context('when a route name is given', function () {
 
-                it('should proxy the ->addRoute() method with the name and DELETE method', function () {
+                it('should proxy the ->addRoute() method with the route name and DELETE method', function () {
 
                     $collection = $this->collector->get();
 
@@ -407,7 +407,7 @@ describe('NamedRouteCollector', function () {
 
         describe('->patch()', function () {
 
-            context('when no name is given', function () {
+            context('when no route name is given', function () {
 
                 it('should proxy the ->addRoute() method with the PATCH method', function () {
 
@@ -421,9 +421,9 @@ describe('NamedRouteCollector', function () {
 
             });
 
-            context('when a name is given', function () {
+            context('when a route name is given', function () {
 
-                it('should proxy the ->addRoute() method with the name and PATCH method', function () {
+                it('should proxy the ->addRoute() method with the route name and PATCH method', function () {
 
                     $collection = $this->collector->get();
 
@@ -439,7 +439,7 @@ describe('NamedRouteCollector', function () {
 
         describe('->head()', function () {
 
-            context('when no name is given', function () {
+            context('when no route name is given', function () {
 
                 it('should proxy the ->addRoute() method with the HEAD method', function () {
 
@@ -453,9 +453,9 @@ describe('NamedRouteCollector', function () {
 
             });
 
-            context('when a name is given', function () {
+            context('when a route name is given', function () {
 
-                it('should proxy the ->addRoute() method with the name and HEAD method', function () {
+                it('should proxy the ->addRoute() method with the route name and HEAD method', function () {
 
                     $collection = $this->collector->get();
 

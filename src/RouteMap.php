@@ -7,28 +7,28 @@ use FastRoute\RouteParser;
 use Ellipse\FastRoute\Exceptions\RouteNameNotMappedException;
 use Ellipse\FastRoute\Exceptions\RouteNameAlreadyMappedException;
 
-class Map
+class RouteMap
 {
     /**
-     * The list of prefixes to prepend to the names.
+     * The list of prefixes to prepend to the route names.
      *
-     * @var string
+     * @var array
      */
-    private $names = [];
+    private $names;
 
     /**
      * The list of prefixes to prepend to the route patterns.
      *
-     * @var string
+     * @var array
      */
-    private $patterns = [];
+    private $patterns;
 
     /**
-     * The associative array of name => route pattern pairs.
+     * The associative array of route name => route pattern pairs.
      *
      * @var array
      */
-    private $name2pattern = [];
+    private $name2pattern;
 
     /**
      * The fastroute route parser
@@ -38,19 +38,23 @@ class Map
     private $parser;
 
     /**
-     * Set up a map.
+     * Set up a route map.
      */
     public function __construct()
     {
+        $this->names = [];
+        $this->patterns = [];
+        $this->name2pattern = [];
         $this->parser = new RouteParser\Std;
     }
 
     /**
-     * Return a new RoutePAtter from the route pattern associated to the given
-     * name.
+     * Return a new RoutePattern from the route pattern associated to the given
+     * route name.
      *
      * @param string $name
      * @return \Ellipse\FastRoute\RoutePattern
+     * @throws \Ellipse\FastRoute\Exceptions\RouteNameNotMappedException
      */
     public function pattern(string $name): RoutePattern
     {
@@ -68,12 +72,13 @@ class Map
     }
 
     /**
-     * Associate the given name with the given route pattern when not empty. The
-     * given name gets prefixed with the current prefix.
+     * Associate the given route name with the given route pattern when not
+     * empty. Prefix it with the current prefix.
      *
      * @param string $name
      * @param string $route
      * @return void
+     * @throws \Ellipse\FastRoute\Exceptions\RouteNameAlreadyMappedException
      */
     public function associate(string $name, string $route): void
     {
@@ -94,8 +99,8 @@ class Map
     }
 
     /**
-     * Return the given name prefixed with the current name prefixes (spaced by
-     * a dot).
+     * Return the given route name prefixed with the current route name prefixes
+     * (spaced by a dot).
      *
      * @param string $name
      * @return string
@@ -122,7 +127,8 @@ class Map
     }
 
     /**
-     * Add a name prefix to the current name prefixes (spaced by a dot).
+     * Add a route name prefix to the current route name prefixes (spaced by a
+     * dot).
      *
      * @param string $name
      * @return void
@@ -133,7 +139,7 @@ class Map
     }
 
     /**
-     * Remove the last name prefix from the current name prefixes.
+     * Remove the last route name prefix from the current route name prefixes.
      *
      * @return void
      */

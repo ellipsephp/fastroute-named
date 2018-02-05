@@ -3,30 +3,25 @@
 use function Eloquent\Phony\Kahlan\mock;
 
 use Ellipse\FastRoute\Url;
-use Ellipse\FastRoute\Path;
-use Ellipse\FastRoute\Urls\UrlInterface;
+use Ellipse\FastRoute\UrlPath;
 
 describe('Url', function () {
 
     beforeEach(function () {
 
-        $this->path = mock(Path::class);
-
-        $this->path->value->returns('url');
+        $this->path = mock(UrlPath::class);
 
     });
 
-    it('it should implement UrlInterface', function () {
+    describe('->value()', function () {
 
-        $test = new Url($this->path->get());
+        beforeEach(function () {
 
-        expect($test)->toBeAnInstanceOf(UrlInterface::class);
+            $this->path->value->returns('url');
 
-    });
+        });
 
-    describe('->__toString()', function () {
-
-        context('when no query string is given', function () {
+        context('when no array of query parameters is given', function () {
 
             context('when no fragment is given', function () {
 
@@ -34,7 +29,7 @@ describe('Url', function () {
 
                     $url = new Url($this->path->get());
 
-                    $test = (string) $url;
+                    $test = $url->value();
 
                     expect($test)->toEqual('url');
 
@@ -48,7 +43,7 @@ describe('Url', function () {
 
                     $url = new Url($this->path->get(), [], 'fragment');
 
-                    $test = (string) $url;
+                    $test = $url->value();
 
                     expect($test)->toEqual('url#fragment');
 
@@ -58,15 +53,15 @@ describe('Url', function () {
 
         });
 
-        context('when a query string is given', function () {
+        context('when an array of query parameters is given', function () {
 
             context('when no fragment is given', function () {
 
-                it('should append the query string to the delegate url', function () {
+                it('should append the query parameters to the delegate url', function () {
 
                     $url = new Url($this->path->get(), ['q1' => 'v1', 'q2' => 'v2']);
 
-                    $test = (string) $url;
+                    $test = $url->value();
 
                     expect($test)->toEqual('url?q1=v1&q2=v2');
 
@@ -76,11 +71,11 @@ describe('Url', function () {
 
             context('when a fragment is given', function () {
 
-                it('should append the fragment after the query string to the delegate url', function () {
+                it('should append the fragment after the query parameters to the delegate url', function () {
 
                     $url = new Url($this->path->get(), ['q1' => 'v1', 'q2' => 'v2'], 'fragment');
 
-                    $test = (string) $url;
+                    $test = $url->value();
 
                     expect($test)->toEqual('url?q1=v1&q2=v2#fragment');
 

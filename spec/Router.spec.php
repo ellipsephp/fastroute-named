@@ -27,20 +27,22 @@ describe('Router', function () {
 
         context('when the factory returns an instance of Dispatcher', function () {
 
-            it('should populate the route collector with the mapper and return the dispatcher', function () {
+            it('should populate the route collector with the route mapper and return the dispatcher produced by the factory', function () {
 
                 $named = new NamedRouteCollector($this->collector->get());
                 $dispatcher = mock(Dispatcher::class)->get();
 
-                $this->collector->getData->returns(['data']);
+                $this->mapper->with($named)->does(function () {
+
+                    $this->collector->getData->returns(['data']);
+
+                });
 
                 $this->factory->with(['data'])->returns($dispatcher);
 
                 $test = $this->router->dispatcher();
 
                 expect($test)->toBe($dispatcher);
-
-                $this->mapper->calledWith($named);
 
             });
 

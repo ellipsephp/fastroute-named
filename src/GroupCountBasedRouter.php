@@ -10,16 +10,17 @@ use FastRoute\Dispatcher;
 class GroupCountBasedRouter extends Router
 {
     /**
-     * Set up a default fastroute router with the given mapper. Use group count
-     * based fastroute collector and dispatcher.
+     * Set up a group count based fastroute router with the given mapper.
      *
      * @param callable $mapper
      */
     public function __construct(callable $mapper)
     {
-        $collector = new RouteCollector(
-            new RouteParser\Std, new DataGenerator\GroupCountBased
-        );
+        $parser = new RouteParser\Std;
+
+        $generator = new DataGenerator\GroupCountBased;
+
+        $collector = new RouteCollector($parser, $generator);
 
         $factory = function ($data) {
 

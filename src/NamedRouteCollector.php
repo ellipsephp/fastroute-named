@@ -4,7 +4,7 @@ namespace Ellipse\FastRoute;
 
 use FastRoute\RouteCollector;
 
-use Ellipse\FastRoute\Exceptions\RouteNameNotAStringException;
+use Ellipse\FastRoute\Exceptions\RouteNameTypeException;
 
 class NamedRouteCollector
 {
@@ -16,9 +16,9 @@ class NamedRouteCollector
     private $delegate;
 
     /**
-     * The name to route pattern map.
+     * The route name to route pattern map.
      *
-     * @var \Ellipse\FastRoute\Map
+     * @var \Ellipse\FastRoute\RouteMap
      */
     private $map;
 
@@ -30,11 +30,11 @@ class NamedRouteCollector
     public function __construct(RouteCollector $delegate)
     {
         $this->delegate = $delegate;
-        $this->map = new Map;
+        $this->map = new RouteMap;
     }
 
     /**
-     * Proxy the map ->pattern() method.
+     * Proxy the route map ->pattern() method.
      *
      * @param string $name
      * @return \Ellipse\FastRoute\RoutePattern
@@ -45,11 +45,12 @@ class NamedRouteCollector
     }
 
     /**
-     * Proxy the delegate ->addRoute() method. Allow to pass an optional name as
-     * first argument which gets mapped to the route pattern.
+     * Proxy the delegate ->addRoute() method. Allow to pass an optional route
+     * name as first argument which gets mapped to the route pattern.
      *
      * @param mixed ...$args
      * @return void
+     * @throws \Ellipse\FastRoute\Exceptions\RouteNameTypeException
      */
     public function addRoute(...$args)
     {
@@ -60,7 +61,7 @@ class NamedRouteCollector
 
         if (! is_string($name)) {
 
-            throw new RouteNameNotAStringException($name);
+            throw new RouteNameTypeException($name);
 
         }
 
@@ -71,11 +72,12 @@ class NamedRouteCollector
 
     /**
      * Proxy the delegate ->addGroup() by passing this named route collector to
-     * the given callback. Allow to pass an optional name prefix which gets
-     * preprended to all names defined in the callback.
+     * the given callback. Allow to pass an optional route name prefix which
+     * gets preprended to all names defined in the callback.
      *
      * @param mixed ...$args
      * @return void
+     * @throws \Ellipse\FastRoute\Exceptions\RouteNameTypeException
      */
     public function addGroup(...$args)
     {
@@ -85,7 +87,7 @@ class NamedRouteCollector
 
         if (! is_string($name_prefix)) {
 
-            throw new RouteNameNotAStringException($name_prefix);
+            throw new RouteNameTypeException($name_prefix);
 
         }
 
@@ -113,8 +115,8 @@ class NamedRouteCollector
     }
 
     /**
-     * Proxy the delegate ->get() method. Allow to pass an optional name as
-     * first argument which gets mapped to the route pattern.
+     * Proxy the delegate ->get() method. Allow to pass an optional route name
+     * as first argument which gets mapped to the route pattern.
      *
      * @param mixed ...$args
      * @return void
@@ -125,8 +127,8 @@ class NamedRouteCollector
     }
 
     /**
-     * Proxy the delegate ->post() method. Allow to pass an optional name as
-     * first argument which gets mapped to the route pattern.
+     * Proxy the delegate ->post() method. Allow to pass an optional route name
+     * as first argument which gets mapped to the route pattern.
      *
      * @param mixed ...$args
      * @return void
@@ -137,8 +139,8 @@ class NamedRouteCollector
     }
 
     /**
-     * Proxy the delegate ->put() method. Allow to pass an optional name as
-     * first argument which gets mapped to the route pattern.
+     * Proxy the delegate ->put() method. Allow to pass an optional route name
+     * as first argument which gets mapped to the route pattern.
      *
      * @param mixed ...$args
      * @return void
@@ -149,8 +151,8 @@ class NamedRouteCollector
     }
 
     /**
-     * Proxy the delegate ->delete() method. Allow to pass an optional name as
-     * first argument which gets mapped to the route pattern.
+     * Proxy the delegate ->delete() method. Allow to pass an optional route name
+     * as first argument which gets mapped to the route pattern.
      *
      * @param mixed ...$args
      * @return void
@@ -161,8 +163,8 @@ class NamedRouteCollector
     }
 
     /**
-     * Proxy the delegate ->patch() method. Allow to pass an optional name as
-     * first argument which gets mapped to the route pattern.
+     * Proxy the delegate ->patch() method. Allow to pass an optional route name
+     * as first argument which gets mapped to the route pattern.
      *
      * @param mixed ...$args
      * @return void
@@ -173,8 +175,8 @@ class NamedRouteCollector
     }
 
     /**
-     * Proxy the delegate ->head() method. Allow to pass an optional name as
-     * first argument which gets mapped to the route pattern.
+     * Proxy the delegate ->head() method. Allow to pass an optional route name
+     * as first argument which gets mapped to the route pattern.
      *
      * @param mixed ...$args
      * @return void
@@ -185,8 +187,8 @@ class NamedRouteCollector
     }
 
     /**
-     * Utility method containing the logic used to add an optional name when
-     * using shortcuts.
+     * Utility method containing the logic used to add an optional route name
+     * when using shortcuts.
      *
      * @param mixed ...$args
      * @return void

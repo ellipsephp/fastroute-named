@@ -8,7 +8,7 @@ class WrongNumberOfParametersException extends RuntimeException implements FastR
 {
     public function __construct(string $name, array $allowed, int $given)
     {
-        $template = "The route '%s' require %s, %s given";
+        $template = "The route '%s' %s, %s given";
 
         $min = min($allowed);
         $max = max($allowed);
@@ -34,23 +34,23 @@ class WrongNumberOfParametersException extends RuntimeException implements FastR
 
             if ($min == 0) {
 
-                return 'no parameter';
+                return 'don\'t require any parameter';
 
             }
 
             elseif ($min == 1) {
 
-                return 'exactly 1 parameter';
+                return 'require exactly 1 parameter';
 
             } else {
 
-                return implode(' ', ['exactly', $min, 'parameters']);
+                return implode(' ', ['require', 'exactly', $min, 'parameters']);
 
             }
 
         } else {
 
-            return implode(' ', ['between', $min, 'and', $max, 'parameters']);
+            return implode(' ', ['require', 'between', $min, 'and', $max, 'parameters']);
 
         }
     }

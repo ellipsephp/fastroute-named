@@ -2,43 +2,72 @@
 
 namespace Ellipse\FastRoute;
 
-use Ellipse\FastRoute\Urls\UrlInterface;
-use Ellipse\FastRoute\Urls\UrlWithFragment;
-use Ellipse\FastRoute\Urls\UrlWithQueryString;
-use Ellipse\FastRoute\Urls\UrlWithPath;
-
-class Url implements UrlInterface
+class Url
 {
     /**
-     * The delegate.
+     * The url path.
      *
-     * @var \Ellipse\FastRoute\Urls\UrlInterface
+     * @var \Ellipse\FastRoute\UrlPath
      */
-    private $delegate;
+    private $path;
 
     /**
-     * Set up an url with the given path, query parameters and fragment.
+     * The query parameters.
      *
-     * @param \Ellipse\FastRoute\Path   $path
-     * @param array                     $query
-     * @param string                    $fragment
+     * @var array
      */
-    public function __construct(Path $path, array $query = [], string $fragment = '')
+    private $query;
+
+    /**
+     * The fragment.
+     *
+     * @var string
+     */
+    private $fragment;
+
+    /**
+     * Set up an url with the given url path, query parameters and fragment.
+     *
+     * @param \Ellipse\FastRoute\UrlPath    $path
+     * @param array                         $query
+     * @param string                        $fragment
+     */
+    public function __construct(UrlPath $path, array $query = [], string $fragment = '')
     {
-        $this->delegate = new UrlWithFragment(
-            $fragment,
-            new UrlWithQueryString(
-                $query,
-                new UrlWithPath($path)
-            )
-        );
+        $this->path = $path;
+        $this->query = $query;
+        $this->fragment = $fragment;
     }
 
     /**
-     * @inheritdoc
+     * Return a string representation of the url.
+     *
+     * @return string
      */
-    public function __toString()
+    public function value(): string
     {
-        return (string) $this->delegate;
+        return $this->path->value() . $this->query() . $this->fragment();
+    }
+
+    /**
+     * Return the string representation of the query parameters.
+     *
+     * @return string
+     */
+    private function query(): string
+    {
+        return (count($this->query) > 0)
+            ? '?' . http_build_query($this->query)
+            : '';
+    }
+
+    /**
+     * Return the string representation of the fragment.
+     *
+     * @return string
+     */
+    private function fragment(): string
+    {
+        return ($this->fragment == '') ? '' : '#' . $this->fragment;
     }
 }

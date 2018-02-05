@@ -21,7 +21,7 @@ class RoutePattern
     private $signatures;
 
     /**
-     * Set up a route pattern with the given name and allowed signatures.
+     * Set up a route pattern with the given route name and allowed signatures.
      *
      * @param string    $name
      * @param array     $signatures
@@ -33,17 +33,18 @@ class RoutePattern
     }
 
     /**
-     * Return an url from the given parameters, query string and fragment.
+     * Return an url for this route pattern using the given placeholders, query
+     * string and fragment.
      *
-     * @param array     $parameters
+     * @param array     $placeholders
      * @param array     $query
      * @param string    $fragment
      * @return \Ellipse\FastRoute\Url
      * @throws \Ellipse\FastRoute\Exceptions\WrongNumberOfParametersException
      */
-    public function url(array $parameters = [], array $query = [], string $fragment = ''): Url
+    public function url(array $placeholders = [], array $query = [], string $fragment = ''): Url
     {
-        $given = count($parameters);
+        $given = count($placeholders);
         $allowed = [];
 
         foreach ($this->signatures as $signature) {
@@ -52,7 +53,7 @@ class RoutePattern
 
             if ($given == $accepted) {
 
-                return new Url(new Path($this->name, $signature, $parameters), $query, $fragment);
+                return new Url(new UrlPath($this->name, $signature, $placeholders), $query, $fragment);
 
             }
 

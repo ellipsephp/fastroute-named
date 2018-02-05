@@ -1,13 +1,13 @@
 <?php
 
 use Ellipse\FastRoute\Exceptions\FastRouteExceptionInterface;
-use Ellipse\FastRoute\Exceptions\RouteNameNotAStringException;
+use Ellipse\FastRoute\Exceptions\RouteNameTypeException;
 
-describe('RouteNameNotAStringException', function () {
+describe('RouteNameTypeException', function () {
 
     it('should implement FastRouteExceptionInterface', function () {
 
-        $test = new RouteNameNotAStringException('name');
+        $test = new RouteNameTypeException(1);
 
         expect($test)->toBeAnInstanceOf(FastRouteExceptionInterface::class);
 

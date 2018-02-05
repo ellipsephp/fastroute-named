@@ -17,13 +17,13 @@ describe('WrongNumberOfParametersException', function () {
 
         context('when exactly 0 parameter is required', function () {
 
-            it('should contain \'no parameter\'', function () {
+            it('should contain \'don\'t require any parameter\'', function () {
 
                 $exception = new WrongNumberOfParametersException('name', [0], 1);
 
                 $test = $exception->getMessage();
 
-                expect($test)->toContain('no parameter');
+                expect($test)->toContain('don\'t require any parameter');
 
             });
 

@@ -10,9 +10,9 @@ use Ellipse\FastRoute\Exceptions\DispatcherTypeException;
 class Router
 {
     /**
-     * The fastroute collector to use.
+     * The named route collector wrapped around the fastroute collector.
      *
-     * @var \FastRoute\RouteCollector
+     * @var \Ellipse\Router\NamedRouteCollector
      */
     private $collector;
 
@@ -62,9 +62,9 @@ class Router
      */
     public function dispatcher(): Dispatcher
     {
-        $collector = $this->collector();
+        $this->mapRoutes();
 
-        $data = $collector->getData();
+        $data = $this->collector->getData();
 
         $dispatcher = ($this->factory)($data);
 
@@ -84,18 +84,17 @@ class Router
      */
     public function generator(): UrlFactory
     {
-        $collector = $this->collector();
+        $this->mapRoutes();
 
-        return new UrlFactory($collector);
+        return new UrlFactory($this->collector);
     }
 
     /**
-     * Return a named route collector based on the route collector and populated
-     * with the mapper. Map the routes only on the first call.
+     * Populate the named route collector the first time it is called.
      *
-     * @return \Ellipse\Router\NamedRouteCollector
+     * @return void
      */
-    private function collector(): NamedRouteCollector
+    private function mapRoutes(): void
     {
         if (! $this->mapped) {
 
@@ -104,7 +103,5 @@ class Router
             $this->mapped = true;
 
         }
-
-        return $this->collector;
     }
 }

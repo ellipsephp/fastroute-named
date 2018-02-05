@@ -2,10 +2,10 @@
 
 use FastRoute\RouteParser;
 
-use Ellipse\FastRoute\Path;
+use Ellipse\FastRoute\UrlPath;
 use Ellipse\FastRoute\Exceptions\WrongParameterFormatException;
 
-describe('Path', function () {
+describe('UrlPath', function () {
 
     beforeEach(function () {
 
@@ -23,7 +23,7 @@ describe('Path', function () {
 
                 $parts = current($this->parser->parse($pattern));
 
-                $path = new Path('name', $parts, ['v1', 'v2']);
+                $path = new UrlPath('name', $parts, ['v1', 'v2']);
 
                 $test = $path->value();
 
@@ -37,7 +37,7 @@ describe('Path', function () {
 
                 $parts = current($this->parser->parse($pattern));
 
-                $path = new Path('name', $parts, ['v1', 2]);
+                $path = new UrlPath('name', $parts, ['v1', 2]);
 
                 $test = $path->value();
 
@@ -55,13 +55,11 @@ describe('Path', function () {
 
                 $parts = current($this->parser->parse($pattern));
 
-                $path = new Path('name', $parts, [1, 'v2']);
-
-                $test = function () use ($path) { $path->value(); };
+                $path = new UrlPath('name', $parts, [1, 'v2']);
 
                 $exception = new WrongParameterFormatException('v2', 'name', 'p2', '[0-9]+');
 
-                expect($test)->toThrow($exception);
+                expect([$path, 'value'])->toThrow($exception);
 
             });
 

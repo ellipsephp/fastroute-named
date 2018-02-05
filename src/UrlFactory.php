@@ -22,17 +22,17 @@ class UrlFactory
     }
 
     /**
-     * Return an url from the route pattern matching the given name and
-     * parameters, enventually appending the given query string and fragment.
+     * Return an url from the route signature matching the given route name and
+     * placeholders, enventually appending the given query string and fragment.
      *
      * @param string    $name
-     * @param array     $parameters
+     * @param array     $placeholders
      * @param array     $query
      * @param string    $fragment
      * @return string
      */
-    public function __invoke(string $name, array $parameters = [], array $query = [], string $fragment = ''): string
+    public function __invoke(string $name, array $placeholders = [], array $query = [], string $fragment = ''): string
     {
-        return (string) $this->collector->pattern($name)->url($parameters, $query, $fragment);
+        return $this->collector->pattern($name)->url($placeholders, $query, $fragment)->value();
     }
 }

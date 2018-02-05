@@ -4,12 +4,12 @@ use function Eloquent\Phony\Kahlan\mock;
 
 use FastRoute\RouteParser;
 
-use Ellipse\FastRoute\Map;
+use Ellipse\FastRoute\RouteMap;
 use Ellipse\FastRoute\RoutePattern;
 use Ellipse\FastRoute\Exceptions\RouteNameNotMappedException;
 use Ellipse\FastRoute\Exceptions\RouteNameAlreadyMappedException;
 
-describe('Map', function () {
+describe('RouteMap', function () {
 
     beforeEach(function () {
 
@@ -22,15 +22,15 @@ describe('Map', function () {
 
         allow(RouteParser\Std::class)->toBe($this->parser->get());
 
-        $this->map = new Map;
+        $this->map = new RouteMap;
 
     });
 
     describe('->pattern()', function () {
 
-        context('when the given name is associated to a route pattern', function () {
+        context('when the given route name is associated to a route pattern', function () {
 
-            it('should return a new RoutePattern from the pattern associated with the given name', function () {
+            it('should return a new RoutePattern from the pattern associated with the given route name', function () {
 
                 $this->map->associate('name', '/pattern');
 
@@ -44,7 +44,7 @@ describe('Map', function () {
 
         });
 
-        context('when the given name is not associated to a route pattern', function () {
+        context('when the given route name is not associated to a route pattern', function () {
 
             it('should throw a RouteNameNotMappedException', function () {
 
@@ -98,9 +98,9 @@ describe('Map', function () {
 
             });
 
-            context('when the given name is not already associated to a route pattern', function () {
+            context('when the given route name is not already associated to a route pattern', function () {
 
-                it('should associate the given name to the given route pattern', function () {
+                it('should associate the given route name to the given route pattern', function () {
 
                     $test = $this->map->pattern('name');
 
@@ -112,7 +112,7 @@ describe('Map', function () {
 
             });
 
-            context('when the given name is already associated to a route pattern', function () {
+            context('when the given route name is already associated to a route pattern', function () {
 
                 it('should throw a RouteNameAlreadyMappedException', function () {
 
@@ -132,7 +132,7 @@ describe('Map', function () {
 
     describe('->addNamePrefix()', function () {
 
-        it('should merge multiple name prefixes spaced by a dot', function () {
+        it('should merge multiple route name prefixes spaced by a dot', function () {
 
             $this->map->addNamePrefix('prefix1');
             $this->map->addNamePrefix('prefix2');
@@ -147,7 +147,7 @@ describe('Map', function () {
 
         });
 
-        it('should not use empty name prefixes', function () {
+        it('should not use empty route name prefixes', function () {
 
             $this->map->addNamePrefix('prefix1');
             $this->map->addNamePrefix('');
@@ -167,9 +167,9 @@ describe('Map', function () {
 
     describe('->removeNamePrefix()', function () {
 
-        context('when there is only one name prefix', function () {
+        context('when there is only one route name prefix', function () {
 
-            it('should use an empty name prefix', function () {
+            it('should use an empty route name prefix', function () {
 
                 $this->map->addNamePrefix('prefix');
                 $this->map->removeNamePrefix();
@@ -186,7 +186,7 @@ describe('Map', function () {
 
         });
 
-        context('when there is multiple name prefixes', function () {
+        context('when there is multiple route name prefixes', function () {
 
             it('should remove the last one', function () {
 
@@ -206,9 +206,9 @@ describe('Map', function () {
 
         });
 
-        context('when the last name prefix is empty', function () {
+        context('when the last route name prefix is empty', function () {
 
-            it('should use the same name prefix', function () {
+            it('should use the same route name prefix', function () {
 
                 $this->map->addNamePrefix('prefix');
                 $this->map->addNamePrefix('');

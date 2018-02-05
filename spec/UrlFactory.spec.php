@@ -27,11 +27,11 @@ describe('UrlFactory', function () {
 
             $this->url = mock(Url::class);
 
-            $this->url->__toString->returns('url');
+            $this->url->value->returns('url');
 
         });
 
-        context('when parameters, query parameters and a fragment are given', function () {
+        context('when placeholders, query parameters and a fragment are given', function () {
 
             it('should proxy the ->url() method of the RoutePattern returned by the named route collector', function () {
 
@@ -45,9 +45,9 @@ describe('UrlFactory', function () {
 
         });
 
-        context('when no parameters, query parameters or fragment are given', function () {
+        context('when no placeholders, query parameter or fragment are given', function () {
 
-            it('should proxy the ->url() method of the RoutePattern with an empty parameters, query string and fragment', function () {
+            it('should proxy the ->url() method of the RoutePattern with an empty placeholders, query parameter and fragment', function () {
 
                 $this->pattern->url->with([], [], '')->returns($this->url);
 
