@@ -1,13 +1,13 @@
 <?php
 
 use Ellipse\FastRoute\Exceptions\FastRouteExceptionInterface;
-use Ellipse\FastRoute\Exceptions\WrongNumberOfParametersException;
+use Ellipse\FastRoute\Exceptions\PlaceholderCountException;
 
-describe('WrongNumberOfParametersException', function () {
+describe('PlaceholderCountException', function () {
 
     it('should implement FastRouteExceptionInterface', function () {
 
-        $test = new WrongNumberOfParametersException('name', [1, 2], 0);
+        $test = new PlaceholderCountException('name', [1, 2], 0);
 
         expect($test)->toBeAnInstanceOf(FastRouteExceptionInterface::class);
 
@@ -19,7 +19,7 @@ describe('WrongNumberOfParametersException', function () {
 
             it('should contain \'don\'t require any parameter\'', function () {
 
-                $exception = new WrongNumberOfParametersException('name', [0], 1);
+                $exception = new PlaceholderCountException('name', [0], 1);
 
                 $test = $exception->getMessage();
 
@@ -33,7 +33,7 @@ describe('WrongNumberOfParametersException', function () {
 
             it('should contain \'exactly 1 parameter\'', function () {
 
-                $exception = new WrongNumberOfParametersException('name', [1], 1);
+                $exception = new PlaceholderCountException('name', [1], 1);
 
                 $test = $exception->getMessage();
 
@@ -47,7 +47,7 @@ describe('WrongNumberOfParametersException', function () {
 
             it('should contain \'exactly n parameters\'', function () {
 
-                $exception = new WrongNumberOfParametersException('name', [2], 1);
+                $exception = new PlaceholderCountException('name', [2], 1);
 
                 $test = $exception->getMessage();
 
@@ -61,7 +61,7 @@ describe('WrongNumberOfParametersException', function () {
 
             it('should contain \'between n and m parameters\'', function () {
 
-                $exception = new WrongNumberOfParametersException('name', [1, 2], 1);
+                $exception = new PlaceholderCountException('name', [1, 2], 1);
 
                 $test = $exception->getMessage();
 

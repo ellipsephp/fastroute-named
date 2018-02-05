@@ -3,7 +3,8 @@
 use FastRoute\RouteParser;
 
 use Ellipse\FastRoute\UrlPath;
-use Ellipse\FastRoute\Exceptions\WrongParameterFormatException;
+use Ellipse\FastRoute\Exceptions\PlaceholderTypeException;
+use Ellipse\FastRoute\Exceptions\PlaceholderFormatException;
 
 describe('UrlPath', function () {
 
@@ -47,9 +48,85 @@ describe('UrlPath', function () {
 
         });
 
+        context('when a placeholder is null', function () {
+
+            it('should throw a PlaceholderTypeException', function () {
+
+                $pattern = '/pattern/{p1:[0-9]+}/{p2:[0-9]+}';
+
+                $parts = current($this->parser->parse($pattern));
+
+                $path = new UrlPath('name', $parts, [null, 'v2']);
+
+                $exception = new PlaceholderTypeException(null);
+
+                expect([$path, 'value'])->toThrow($exception);
+
+            });
+
+        });
+
+        context('when a placeholder is an array', function () {
+
+            it('should throw a PlaceholderTypeException', function () {
+
+                $pattern = '/pattern/{p1:[0-9]+}/{p2:[0-9]+}';
+
+                $parts = current($this->parser->parse($pattern));
+
+                $path = new UrlPath('name', $parts, [[], 'v2']);
+
+                $exception = new PlaceholderTypeException([]);
+
+                expect([$path, 'value'])->toThrow($exception);
+
+            });
+
+        });
+
+        context('when a placeholder is an object', function () {
+
+            it('should throw a PlaceholderTypeException', function () {
+
+                $instance = new class {};
+
+                $pattern = '/pattern/{p1:[0-9]+}/{p2:[0-9]+}';
+
+                $parts = current($this->parser->parse($pattern));
+
+                $path = new UrlPath('name', $parts, [$instance, 'v2']);
+
+                $exception = new PlaceholderTypeException($instance);
+
+                expect([$path, 'value'])->toThrow($exception);
+
+            });
+
+        });
+
+        context('when a placeholder is a resource', function () {
+
+            it('should throw a PlaceholderTypeException', function () {
+
+                $resource = fopen('php://memory', 'r');
+
+                $pattern = '/pattern/{p1:[0-9]+}/{p2:[0-9]+}';
+
+                $parts = current($this->parser->parse($pattern));
+
+                $path = new UrlPath('name', $parts, [$resource, 'v2']);
+
+                $exception = new PlaceholderTypeException($resource);
+
+                expect([$path, 'value'])->toThrow($exception);
+
+            });
+
+        });
+
         context('when a parameter does not match a pattern part format', function () {
 
-            it('should throw a WrongParameterFormatException', function () {
+            it('should throw a PlaceholderFormatException', function () {
 
                 $pattern = '/pattern/{p1:[0-9]+}/{p2:[0-9]+}';
 
@@ -57,7 +134,7 @@ describe('UrlPath', function () {
 
                 $path = new UrlPath('name', $parts, [1, 'v2']);
 
-                $exception = new WrongParameterFormatException('v2', 'name', 'p2', '[0-9]+');
+                $exception = new PlaceholderFormatException('v2', 'name', 'p2', '[0-9]+');
 
                 expect([$path, 'value'])->toThrow($exception);
 

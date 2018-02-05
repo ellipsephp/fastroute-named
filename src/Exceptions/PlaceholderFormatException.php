@@ -4,7 +4,7 @@ namespace Ellipse\FastRoute\Exceptions;
 
 use RuntimeException;
 
-class WrongParameterFormatException extends RuntimeException implements FastRouteExceptionInterface
+class PlaceholderFormatException extends RuntimeException implements FastRouteExceptionInterface
 {
     public function __construct(string $value, string $name, string $part, string $format)
     {

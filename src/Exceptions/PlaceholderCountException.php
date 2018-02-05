@@ -4,14 +4,14 @@ namespace Ellipse\FastRoute\Exceptions;
 
 use RuntimeException;
 
-class WrongNumberOfParametersException extends RuntimeException implements FastRouteExceptionInterface
+class PlaceholderCountException extends RuntimeException implements FastRouteExceptionInterface
 {
-    public function __construct(string $name, array $allowed, int $given)
+    public function __construct(string $name, array $accepted, int $given)
     {
         $template = "The route '%s' %s, %s given";
 
-        $min = min($allowed);
-        $max = max($allowed);
+        $min = min($accepted);
+        $max = max($accepted);
 
         $expected_str = $this->format($min, $max);
 

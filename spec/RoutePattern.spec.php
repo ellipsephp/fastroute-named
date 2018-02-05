@@ -4,7 +4,7 @@ use FastRoute\RouteParser;
 
 use Ellipse\FastRoute\Url;
 use Ellipse\FastRoute\RoutePattern;
-use Ellipse\FastRoute\Exceptions\WrongNumberOfParametersException;
+use Ellipse\FastRoute\Exceptions\PlaceholderCountException;
 
 describe('RoutePattern', function () {
 
@@ -22,7 +22,7 @@ describe('RoutePattern', function () {
 
         context('when less placeholders than the number of fixed parts are given', function () {
 
-            it('should throw a WrongNumberOfParametersException', function () {
+            it('should throw a PlaceholderCountException', function () {
 
                 $test = function () {
 
@@ -30,7 +30,7 @@ describe('RoutePattern', function () {
 
                 };
 
-                $exception = new WrongNumberOfParametersException('name', [1, 2], 0);
+                $exception = new PlaceholderCountException('name', [1, 2], 0);
 
                 expect($test)->toThrow($exception);
 
@@ -40,7 +40,7 @@ describe('RoutePattern', function () {
 
         context('when more placeholders than the number of fixed parts are given', function () {
 
-            it('should throw a WrongNumberOfParametersException', function () {
+            it('should throw a PlaceholderCountException', function () {
 
                 $test = function () {
 
@@ -48,7 +48,7 @@ describe('RoutePattern', function () {
 
                 };
 
-                $exception = new WrongNumberOfParametersException('name', [1, 2], 3);
+                $exception = new PlaceholderCountException('name', [1, 2], 3);
 
                 expect($test)->toThrow($exception);
 

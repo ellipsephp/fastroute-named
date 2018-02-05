@@ -2,7 +2,8 @@
 
 namespace Ellipse\FastRoute;
 
-use Ellipse\FastRoute\Exceptions\WrongParameterFormatException;
+use Ellipse\FastRoute\Exceptions\PlaceholderTypeException;
+use Ellipse\FastRoute\Exceptions\PlaceholderFormatException;
 
 class UrlPath
 {
@@ -58,32 +59,39 @@ class UrlPath
      * signature, replacing the variable ones with the placeholders.
      *
      * @return string
-     * @throws \Ellipse\FastRoute\Exceptions\WrongParameterFormatException
+     * @throws \Ellipse\FastRoute\Exceptions\PlaceholderTypeException
+     * @throws \Ellipse\FastRoute\Exceptions\PlaceholderFormatException
      */
     public function value(): string
     {
-        if (count($this->signature) > 0) {
+        if (count($this->signature) == 0) {
 
-            [$part, $signature] = $this->split($this->signature);
+            return '';
 
-            if (is_array($part)) {
+        }
 
-                [$placeholder, $placeholders] = $this->split($this->placeholders);
+        [$part, $signature] = $this->split($this->signature);
 
-                if (preg_match('~^' . $part[1] . '$~', (string) $placeholder) !== 0) {
-
-                    return $placeholder . (new UrlPath($this->name, $signature, $placeholders))->value();
-
-                }
-
-                throw new WrongParameterFormatException($placeholder, $this->name, $part[0], $part[1]);
-
-            }
+        if (! is_array($part)) {
 
             return $part . (new UrlPath($this->name, $signature, $this->placeholders))->value();
 
         }
 
-        return '';
+        [$placeholder, $placeholders] = $this->split($this->placeholders);
+
+        if (! is_scalar($placeholder)) {
+
+            throw new PlaceholderTypeException($placeholder);
+
+        }
+
+        if (preg_match('~^' . $part[1] . '$~', (string) $placeholder) !== 0) {
+
+            return $placeholder . (new UrlPath($this->name, $signature, $placeholders))->value();
+
+        }
+
+        throw new PlaceholderFormatException((string) $placeholder, $this->name, $part[0], $part[1]);
     }
 }

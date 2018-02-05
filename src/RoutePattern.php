@@ -2,7 +2,7 @@
 
 namespace Ellipse\FastRoute;
 
-use Ellipse\FastRoute\Exceptions\WrongNumberOfParametersException;
+use Ellipse\FastRoute\Exceptions\PlaceholderCountException;
 
 class RoutePattern
 {
@@ -40,27 +40,27 @@ class RoutePattern
      * @param array     $query
      * @param string    $fragment
      * @return \Ellipse\FastRoute\Url
-     * @throws \Ellipse\FastRoute\Exceptions\WrongNumberOfParametersException
+     * @throws \Ellipse\FastRoute\Exceptions\PlaceholderCountException
      */
     public function url(array $placeholders = [], array $query = [], string $fragment = ''): Url
     {
         $given = count($placeholders);
-        $allowed = [];
+        $accepted = [];
 
         foreach ($this->signatures as $signature) {
 
-            $accepted = count(array_filter($signature, 'is_array'));
+            $nb = count(array_filter($signature, 'is_array'));
 
-            if ($given == $accepted) {
+            if ($given == $nb) {
 
                 return new Url(new UrlPath($this->name, $signature, $placeholders), $query, $fragment);
 
             }
 
-            $allowed[] = $accepted;
+            $accepted[] = $nb;
 
         }
 
-        throw new WrongNumberOfParametersException($this->name, $allowed, $given);
+        throw new PlaceholderCountException($this->name, $accepted, $given);
     }
 }
