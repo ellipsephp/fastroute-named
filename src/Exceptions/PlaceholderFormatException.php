@@ -6,11 +6,11 @@ use RuntimeException;
 
 class PlaceholderFormatException extends RuntimeException implements FastRouteExceptionInterface
 {
-    public function __construct(string $value, string $name, string $part, string $format)
+    public function __construct(string $value, string $name, string $placeholder, string $format)
     {
-        $template = "The value '%s' does not match the format of the route '%s' '%s' parameter ('%s')";
+        $template = "The value '%s' does not match the format of the '%s' placeholder of the '%s' route ('%s')";
 
-        $msg = sprintf($template, $value, $name, $part, $format);
+        $msg = sprintf($template, $value, $placeholder, $name, $format);
 
         parent::__construct($msg);
     }

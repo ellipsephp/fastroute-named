@@ -7,7 +7,7 @@ describe('PlaceholderFormatException', function () {
 
     it('should implement FastRouteExceptionInterface', function () {
 
-        $test = new PlaceholderFormatException('value', 'name', 'parameter', 'format');
+        $test = new PlaceholderFormatException('value', 'name', 'placeholder', 'format');
 
         expect($test)->toBeAnInstanceOf(FastRouteExceptionInterface::class);
 

@@ -15,57 +15,57 @@ describe('PlaceholderCountException', function () {
 
     describe('->getMessage()', function () {
 
-        context('when exactly 0 parameter is required', function () {
+        context('when exactly 0 placeholder is required', function () {
 
-            it('should contain \'don\'t require any parameter\'', function () {
+            it('should contain \'don\'t require any placeholder\'', function () {
 
                 $exception = new PlaceholderCountException('name', [0], 1);
 
                 $test = $exception->getMessage();
 
-                expect($test)->toContain('don\'t require any parameter');
+                expect($test)->toContain('don\'t require any placeholder');
 
             });
 
         });
 
-        context('when exactly 1 parameter is required', function () {
+        context('when exactly 1 placeholder is required', function () {
 
-            it('should contain \'exactly 1 parameter\'', function () {
+            it('should contain \'exactly 1 placeholder\'', function () {
 
                 $exception = new PlaceholderCountException('name', [1], 1);
 
                 $test = $exception->getMessage();
 
-                expect($test)->toContain('exactly 1 parameter');
+                expect($test)->toContain('exactly 1 placeholder');
 
             });
 
         });
 
-        context('when exactly n parameter is required', function () {
+        context('when exactly n placeholder is required', function () {
 
-            it('should contain \'exactly n parameters\'', function () {
+            it('should contain \'exactly n placeholders\'', function () {
 
                 $exception = new PlaceholderCountException('name', [2], 1);
 
                 $test = $exception->getMessage();
 
-                expect($test)->toContain('exactly 2 parameters');
+                expect($test)->toContain('exactly 2 placeholders');
 
             });
 
         });
 
-        context('when there is multiple possible number of parameters', function () {
+        context('when there is multiple possible number of placeholders', function () {
 
-            it('should contain \'between n and m parameters\'', function () {
+            it('should contain \'between n and m placeholders\'', function () {
 
                 $exception = new PlaceholderCountException('name', [1, 2], 1);
 
                 $test = $exception->getMessage();
 
-                expect($test)->toContain('between 1 and 2 parameters');
+                expect($test)->toContain('between 1 and 2 placeholders');
 
             });
 

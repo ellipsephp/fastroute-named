@@ -7,7 +7,7 @@ describe('PlaceholderTypeException', function () {
 
     it('should implement FastRouteExceptionInterface', function () {
 
-        $test = new PlaceholderTypeException(1);
+        $test = new PlaceholderTypeException(1, 'name', 'placeholder');
 
         expect($test)->toBeAnInstanceOf(FastRouteExceptionInterface::class);
 

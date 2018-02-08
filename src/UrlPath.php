@@ -82,7 +82,7 @@ class UrlPath
 
         if (! is_scalar($placeholder)) {
 
-            throw new PlaceholderTypeException($placeholder);
+            throw new PlaceholderTypeException($placeholder, $this->name, $part[0]);
 
         }
 

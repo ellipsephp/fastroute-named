@@ -34,23 +34,23 @@ class PlaceholderCountException extends RuntimeException implements FastRouteExc
 
             if ($min == 0) {
 
-                return 'don\'t require any parameter';
+                return 'don\'t require any placeholder';
 
             }
 
             elseif ($min == 1) {
 
-                return 'require exactly 1 parameter';
+                return 'require exactly 1 placeholder';
 
             } else {
 
-                return implode(' ', ['require', 'exactly', $min, 'parameters']);
+                return implode(' ', ['require', 'exactly', $min, 'placeholders']);
 
             }
 
         } else {
 
-            return implode(' ', ['require', 'between', $min, 'and', $max, 'parameters']);
+            return implode(' ', ['require', 'between', $min, 'and', $max, 'placeholders']);
 
         }
     }

@@ -58,7 +58,7 @@ describe('UrlPath', function () {
 
                 $path = new UrlPath('name', $parts, [null, 'v2']);
 
-                $exception = new PlaceholderTypeException(null);
+                $exception = new PlaceholderTypeException(null, 'name', 'p1');
 
                 expect([$path, 'value'])->toThrow($exception);
 
@@ -76,7 +76,7 @@ describe('UrlPath', function () {
 
                 $path = new UrlPath('name', $parts, [[], 'v2']);
 
-                $exception = new PlaceholderTypeException([]);
+                $exception = new PlaceholderTypeException([], 'name', 'p1');
 
                 expect([$path, 'value'])->toThrow($exception);
 
@@ -96,7 +96,7 @@ describe('UrlPath', function () {
 
                 $path = new UrlPath('name', $parts, [$instance, 'v2']);
 
-                $exception = new PlaceholderTypeException($instance);
+                $exception = new PlaceholderTypeException($instance, 'name', 'p1');
 
                 expect([$path, 'value'])->toThrow($exception);
 
@@ -116,7 +116,7 @@ describe('UrlPath', function () {
 
                 $path = new UrlPath('name', $parts, [$resource, 'v2']);
 
-                $exception = new PlaceholderTypeException($resource);
+                $exception = new PlaceholderTypeException($resource, 'name', 'p1');
 
                 expect([$path, 'value'])->toThrow($exception);
 
